@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Header } from './components/navbar'
+import { Login } from './components/auth/login'
+import { Sign } from './components/auth/registrarse'
+import {AuthDetails} from './components/AuthDetails'
 import axios from "axios";
 
 
@@ -34,6 +37,14 @@ function App() {
   return (
     <>
       <Header/>
+      <div className="w-screen h-screen bg-slate-950">
+        <Login/>
+        <Sign></Sign>
+        <AuthDetails></AuthDetails>
+
+
+      </div>
+
     </>
   )
 }
