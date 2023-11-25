@@ -5,6 +5,7 @@ import axios from "axios";
 
 function App() {
   const [page, setPage] = useState(1)
+  const [pokemons, setPokemons] = useState([])
 
   const url = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=${(page-1)*20}`
 
