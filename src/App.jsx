@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { Header } from './components/navbar'
 import axios from "axios";
 
+import { Pokedex } from './components/Pokedex';
+
 
 function App() {
   const [page, setPage] = useState(1)
@@ -34,6 +36,7 @@ function App() {
   return (
     <>
       <Header/>
+      <Pokedex pokeArr={pokemons}/>
     </>
   )
 }

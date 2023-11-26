@@ -5,20 +5,15 @@ export const Pokemon = ({pokemon}) => {
 
   return ( 
     <>
-      <hr />
-      <h3>{pokemon.name} #{pokemon.id}</h3>
-      <img src={pokemon.sprites.front_default} alt="" />
-      <img src={pokemon.sprites.front_shiny} alt="" />
-      <br />
-      <p>Moves: </p>
-      <select name="moves" id="1">
-      {
-        pokemon.moves.map(pokemon => {
-          return <option key={pokemon.id}>{pokemon.move.name}</option>
+      <a href="#" class="block w-1/2 py-10 text-center border lg:w-1/4">
+            <div>
+                <img src={pokemon.sprites.front_default} class="block mx-auto" />
 
-        })
-      }
-      </select>
+                <p class="pt-4 text-sm font-medium capitalize font-body text-green-900 lg:text-lg md:text-base md:pt-6">
+                  {pokemon.name}
+                </p>
+            </div>
+      </a>
     </>
   )
 }
