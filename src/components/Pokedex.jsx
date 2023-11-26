@@ -7,13 +7,14 @@ export const Pokedex = () => {
     const [page, setPage] = useState(1)
     const [pokemons, setPokemons] = useState([])
     const [search, setSearch] = useState('');
-    const [query, setQuery] = useState('');
+    // const [query, setQuery] = useState('https://pokeapi.co/api/v2/pokemon?limit=20&offset=${(page-1)*20}');
+
 
     const url = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=${(page-1)*20}`
 
     // Consume la pokeAPI
     useEffect(() => {
-        axios.get(url).then((response) => {
+        axios.get(query).then((response) => {
         const pokemonList = response.data.results
         const pokemonPromises = pokemonList.map(pokemon => {
             return axios.get(pokemon.url)
@@ -32,6 +33,7 @@ export const Pokedex = () => {
         })
     }, [setPokemons, page])
 
+    console.log(search)
 
     return(
         // <!-- source: https://redpixelthemes.com/ -->
@@ -43,11 +45,11 @@ export const Pokedex = () => {
             </div>
             
             <div className="flex items-center justify-center mt-2">
-                <input type="text" placeholder="Search pokemon..." class="appearance-none border-2 pl-10 w-1/4 border-gray-600 hover:border-gray-700 transition-colors rounded-md w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:ring-purple-600 focus:border-purple-600 focus:shadow-outline"  />
+                <input onChange={(e) => {setSearch(e.target.value)}} type="text" placeholder="Search pokemon..." className="appearance-none border-2 pl-10 w-1/4 border-gray-600 hover:border-gray-700 transition-colors rounded-md py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:ring-purple-600 focus:border-purple-600 focus:shadow-outline"  />
             </div>
             
-            <div class="container relative z-40 mx-auto mt-12">
-                <div class="flex flex-wrap justify-center mx-auto lg:w-full md:w-5/6 xl:shadow-small-blue">
+            <div className="container relative z-40 mx-auto mt-12">
+                <div className="flex flex-wrap justify-center mx-auto lg:w-full md:w-5/6 xl:shadow-small-blue">
                 {
                     pokemons.map((pokemon) => {
                         return <Pokemon key={pokemon.name} pokemon={pokemon}/>
