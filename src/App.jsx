@@ -7,10 +7,12 @@ import {AuthDetails} from './components/AuthDetails'
 import { Landing } from "./components/landing";
 
 import { Pokedex } from './components/Pokedex';
+import { PokeCard } from "./components/pokeCard";
 
 
 function App() {
   const [pageSelected, setPage] = useState(0)
+  const [poke, setPokeCard] = useState()
 
   const changePage = () => {
     switch (pageSelected) {
@@ -21,11 +23,13 @@ function App() {
       case 2:
         return <Sign/>
       case 3:
-        return <Pokedex/>
+        return <Pokedex page={setPage} pokeCard={setPokeCard} />
+      case 4:
+        return <PokeCard page={setPage} pokemon={poke} />
     }
-    
   }
 
+  
   return (
     <>
       <Header page={setPage} />
@@ -34,7 +38,6 @@ function App() {
       <div>
         {changePage()}
       </div>
-
     </>
   )
 }

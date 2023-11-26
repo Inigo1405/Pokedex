@@ -8,9 +8,9 @@ export const Landing = ({page}) => {
                 <img src="/public/pokebola.ico" className="items-center mb-8 w-60" alt="" />
                 <div className="max-w-2xl w-full px-4">
                     <h1 className="text-4xl font-bold text-center mb-8">Welcome to the pokedex!</h1>
-                    <form className="flex flex-col md:flex-row justify-center items-center gap-4">
+                    <div className="flex flex-col md:flex-row justify-center items-center gap-4">
                         <button onClick={() => page(3)} className="bg-black hover:bg-gray-700 text-white py-2 px-8 border rounded-full">Get started</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

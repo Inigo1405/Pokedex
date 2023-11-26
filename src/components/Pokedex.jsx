@@ -3,18 +3,19 @@ import axios from "axios";
 
 import { Pokemon } from "./Pokemon";
 
-export const Pokedex = () => {
-    const [page, setPage] = useState(1)
+export const Pokedex = ({page, pokeCard}) => {
+    const [numPage, setPage] = useState(1)
     const [pokemons, setPokemons] = useState([])
     const [search, setSearch] = useState('');
     // const [query, setQuery] = useState('https://pokeapi.co/api/v2/pokemon?limit=20&offset=${(page-1)*20}');
+    
+    // const [x, setX] = useState()
 
-
-    const url = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=${(page-1)*20}`
+    const url = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=${(numPage-1)*20}`
 
     // Consume la pokeAPI
     useEffect(() => {
-        axios.get(query).then((response) => {
+        axios.get(url).then((response) => {
         const pokemonList = response.data.results
         const pokemonPromises = pokemonList.map(pokemon => {
             return axios.get(pokemon.url)
@@ -31,17 +32,17 @@ export const Pokedex = () => {
             setPokemons(pokemonData)
         })
         })
-    }, [setPokemons, page])
+    }, [setPokemons, numPage])
 
-    console.log(search)
+    // console.log(x)
 
     return(
         // <!-- source: https://redpixelthemes.com/ -->
         <>
-            <h2 className="text-center font-bold text-lg">Page {page}</h2>
+            <h2 className="text-center font-bold text-lg">Page {numPage}</h2>
             <div className="flex items-center justify-center">
-                {page != 1 && <button onClick={() => {setPage(page-1)}} className="bg-black hover:bg-gray-700 text-white py-2 px-8 border rounded-full">Prev</button>}
-                <button onClick={() => {setPage(page+1)}} className="bg-black hover:bg-gray-700 text-white py-2 px-8 border rounded-full">Next</button>
+                {numPage != 1 && <button onClick={() => {setPage(numPage-1)}} className="bg-black hover:bg-gray-700 text-white py-2 px-8 border rounded-full">Prev</button>}
+                <button onClick={() => {setPage(numPage+1)}} className="bg-black hover:bg-gray-700 text-white py-2 px-8 border rounded-full">Next</button>
             </div>
             
             <div className="flex items-center justify-center mt-2">
@@ -52,7 +53,7 @@ export const Pokedex = () => {
                 <div className="flex flex-wrap justify-center mx-auto lg:w-full md:w-5/6 xl:shadow-small-blue">
                 {
                     pokemons.map((pokemon) => {
-                        return <Pokemon key={pokemon.name} pokemon={pokemon}/>
+                        return <Pokemon key={pokemon.name} pokemon={pokemon} poke={pokeCard} numPage={page}/>
                     })
                 }
                 </div>
