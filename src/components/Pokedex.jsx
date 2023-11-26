@@ -6,6 +6,8 @@ import { Pokemon } from "./Pokemon";
 export const Pokedex = () => {
     const [page, setPage] = useState(1)
     const [pokemons, setPokemons] = useState([])
+    const [search, setSearch] = useState('');
+    const [query, setQuery] = useState('');
 
     const url = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=${(page-1)*20}`
 
@@ -31,10 +33,19 @@ export const Pokedex = () => {
     }, [setPokemons, page])
 
 
-
     return(
         // <!-- source: https://redpixelthemes.com/ -->
         <>
+            <h2 className="text-center font-bold text-lg">Page {page}</h2>
+            <div className="flex items-center justify-center">
+                {page != 1 && <button onClick={() => {setPage(page-1)}} className="bg-black hover:bg-gray-700 text-white py-2 px-8 border rounded-full">Prev</button>}
+                <button onClick={() => {setPage(page+1)}} className="bg-black hover:bg-gray-700 text-white py-2 px-8 border rounded-full">Next</button>
+            </div>
+            
+            <div className="flex items-center justify-center mt-2">
+                <input type="text" placeholder="Search pokemon..." class="appearance-none border-2 pl-10 w-1/4 border-gray-600 hover:border-gray-700 transition-colors rounded-md w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:ring-purple-600 focus:border-purple-600 focus:shadow-outline"  />
+            </div>
+            
             <div class="container relative z-40 mx-auto mt-12">
                 <div class="flex flex-wrap justify-center mx-auto lg:w-full md:w-5/6 xl:shadow-small-blue">
                 {
