@@ -5,7 +5,7 @@ export const Pokemon = ({pokemon}) => {
 
   return ( 
     <>
-      <a href="#" class="block w-1/2 py-10 text-center border lg:w-1/4">
+      <a href="#" class="block w-1/2 py-10 text-center border lg:w-1/3">
             <div>
                 <img src={pokemon.sprites.front_default} class="block mx-auto" />
 

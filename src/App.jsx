@@ -9,24 +9,28 @@ import { Pokedex } from './components/Pokedex';
 
 
 function App() {
-  const [pageSelected, setPage] = useState('')
+  const [pageSelected, setPage] = useState(0)
 
-  const selectPage = (page) => {
-    setPage(page)
+  const changePage = () => {
+    switch (pageSelected) {
+      case 0: 
+        return <Pokedex/>
+      case 1:
+        return <Login/>
+      case 2:
+        return <Sign/>
+    }
+    
   }
 
   return (
     <>
-      <Header page={selectPage} />
+      <Header page={setPage} />
 
-      <div className="w-100vw h-vh bg-slate-950">
-        {
-          pageSelected == 1 ? <Login/> : <Sign/>
-          
-        }
-        <AuthDetails/>
+      <AuthDetails/>
+      <div className="w-100vw h-vh">
+        {changePage()}
       </div>
-      {/* <Pokedex/> */}
 
     </>
   )
