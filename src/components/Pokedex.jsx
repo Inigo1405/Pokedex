@@ -6,10 +6,7 @@ import { Pokemon } from "./Pokemon";
 export const Pokedex = ({page, pokeCard}) => {
     const [numPage, setPage] = useState(1)
     const [pokemons, setPokemons] = useState([])
-    const [search, setSearch] = useState('');
-    // const [query, setQuery] = useState('https://pokeapi.co/api/v2/pokemon?limit=20&offset=${(page-1)*20}');
-    
-    // const [x, setX] = useState()
+    const [search, setSearch] = useState('')
 
     const url = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=${(numPage-1)*20}`
 

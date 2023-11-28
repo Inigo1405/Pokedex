@@ -9,6 +9,8 @@ import { Landing } from "./components/landing";
 import { Pokedex } from './components/Pokedex';
 import { PokeCard } from "./components/pokeCard";
 
+import { Teams } from "./components/teams";
+
 
 function App() {
   const [pageSelected, setPage] = useState(0)
@@ -26,6 +28,8 @@ function App() {
         return <Pokedex page={setPage} pokeCard={setPokeCard} />
       case 4:
         return <PokeCard page={setPage} pokemon={poke} />
+      case 5:
+        return <Teams/>
     }
   }
 

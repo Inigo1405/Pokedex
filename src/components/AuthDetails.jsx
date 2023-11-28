@@ -24,7 +24,15 @@ export const AuthDetails = () => {
         }).catch(error => console,log(error))
     }
   return (
-    <div>{authUser ? <><p>{`Signed In as ${authUser.email}`}</p><button onClick={userSignOut}>Sign Out</button></> : <p>Signed Out</p>}</div>
+    <div>
+        {
+            authUser ? 
+            <>
+                <p>{`Signed In as ${authUser.email}`}</p>
+                <button onClick={userSignOut} className="flex mr-auto text-white bg-black border-0 py-1 px-3 focus:outline-none hover:bg-indigo-600 rounded">Sign Out</button>
+            </> : <p>Not signed</p>
+        }
+    </div>
   )
 }
 
