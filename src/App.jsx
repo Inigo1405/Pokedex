@@ -13,6 +13,7 @@ import { PokeCard } from "./components/pokeCard";
 function App() {
   const [pageSelected, setPage] = useState(0)
   const [poke, setPokeCard] = useState()
+  
 
   const changePage = () => {
     switch (pageSelected) {
