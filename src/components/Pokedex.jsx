@@ -15,7 +15,6 @@ export const Pokedex = ({ page, pokeCard }) => {
   const observer = useRef(null);
   const searchTimeout = useRef(null);
 
-  // Consume the pokeAPI
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -43,7 +42,6 @@ export const Pokedex = ({ page, pokeCard }) => {
     fetchData();
   }, [setPokemons]);
 
-  // Fetch more Pokemon when reaching the end of the list
   const fetchMorePokemons = async () => {
     try {
       const startIndex = numPage * itemsPerPage;
@@ -70,7 +68,14 @@ export const Pokedex = ({ page, pokeCard }) => {
     }
   };
 
-  // Update visiblePokemons whenever pokemons or search changes
+  const handleSearch = (searchTerm) => {
+    clearTimeout(searchTimeout.current);
+    searchTimeout.current = setTimeout(() => {
+      setSearch(searchTerm);
+      setPage(1);
+    }, debounceTimeout);
+  };
+
   useEffect(() => {
     const filteredPokemons = pokemons.filter((pokemon) =>
       pokemon.name.toLowerCase().includes(search.toLowerCase())
@@ -78,7 +83,6 @@ export const Pokedex = ({ page, pokeCard }) => {
     setVisiblePokemons(filteredPokemons);
   }, [pokemons, search]);
 
-  // Intersection Observer to fetch more Pokemon when reaching the end
   const lastPokemonRef = useRef(null);
   useEffect(() => {
     if (observer.current) observer.current.disconnect();
@@ -96,35 +100,16 @@ export const Pokedex = ({ page, pokeCard }) => {
     };
   }, [visiblePokemons, fetchMorePokemons]);
 
-  const handleSearch = (searchTerm) => {
-    // Debounce the search input
-    clearTimeout(searchTimeout.current);
-    searchTimeout.current = setTimeout(() => {
-      setSearch(searchTerm);
-      setPage(1);
-    }, debounceTimeout);
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   return (
     <>
-      <h2 className="text-center font-bold text-lg">Page {numPage}</h2>
       <div className="flex items-center justify-center">
-        <button
-          onClick={() => {
-            setPage((prevPage) => Math.max(prevPage - 1, 1));
-          }}
-          className="bg-black hover:bg-gray-700 text-white py-2 px-8 border rounded-full"
-        >
-          Prev
-        </button>
-        <button
-          onClick={() => {
-            setPage((prevPage) => prevPage + 1);
-          }}
-          className="bg-black hover:bg-gray-700 text-white py-2 px-8 border rounded-full"
-        >
-          Next
-        </button>
       </div>
 
       <Searchbar onSearch={handleSearch} />
@@ -137,6 +122,17 @@ export const Pokedex = ({ page, pokeCard }) => {
           <div ref={lastPokemonRef} style={{ height: 1 }} />
         </div>
       </div>
+
+      {visiblePokemons.length > itemsPerPage && (
+        <div className="fixed bottom-8 right-8 z-50">
+          <button
+            onClick={handleScrollToTop}
+            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
+          >
+            Scroll to Top
+          </button>
+        </div>
+      )}
     </>
   );
 };
