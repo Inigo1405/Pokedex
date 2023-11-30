@@ -15,6 +15,7 @@ import { Teams } from "./components/teams";
 function App() {
   const [pageSelected, setPage] = useState(0)
   const [poke, setPokeCard] = useState()
+  
 
   const [team, setTeam] = useState([]);
 

@@ -1,60 +1,138 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 import { Pokemon } from "./Pokemon";
+import { Searchbar } from "./Searchbar";
 
-export const Pokedex = ({page, pokeCard}) => {
-    const [numPage, setPage] = useState(1)
-    const [pokemons, setPokemons] = useState([])
-    const [search, setSearch] = useState('')
+const itemsPerPage = 50; // Number of Pokemon per page
+const debounceTimeout = 300; // Debounce timeout in milliseconds
 
-    const url = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=${(numPage-1)*20}`
+export const Pokedex = ({ page, pokeCard }) => {
+  const [numPage, setPage] = useState(1);
+  const [pokemons, setPokemons] = useState([]);
+  const [search, setSearch] = useState("");
+  const [visiblePokemons, setVisiblePokemons] = useState([]);
+  const observer = useRef(null);
+  const searchTimeout = useRef(null);
 
-    // Consume la pokeAPI
-    useEffect(() => {
-        axios.get(url).then((response) => {
-            const pokemonList = response.data.results
-            const pokemonPromises = pokemonList.map(pokemon => {
-                return axios.get(pokemon.url)
-            })
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${itemsPerPage}`);
+        const pokemonList = response.data.results;
+        const pokemonPromises = pokemonList.map((pokemon) => {
+          return axios.get(pokemon.url);
+        });
 
-            Promise.all(pokemonPromises).then(pokemonResponses => {
-                const pokemonData = pokemonResponses.map(res => {
-                    const pokemon = res.data 
-                    return {
-                        ...pokemon,
-                        sprites: pokemon.sprites
-                    }
-                })
-                setPokemons(pokemonData)
-            })
-        })
-    }, [setPokemons, numPage])
+        const pokemonResponses = await Promise.all(pokemonPromises);
+        const pokemonData = pokemonResponses.map((res) => {
+          const pokemon = res.data;
+          return {
+            ...pokemon,
+            sprites: pokemon.sprites,
+          };
+        });
 
-    // console.log(x)
+        setPokemons(pokemonData);
+      } catch (error) {
+        console.error("Error fetching Pokémon data:", error);
+      }
+    };
 
-    return(
-        // <!-- source: https://redpixelthemes.com/ -->
-        <>
-            <h2 className="text-center font-bold text-lg">Page {numPage}</h2>
-            <div className="flex items-center justify-center">
-                {numPage != 1 && <button onClick={() => {setPage(numPage-1)}} className="bg-black hover:bg-gray-700 text-white py-2 px-8 border rounded-full">Prev</button>}
-                <button onClick={() => {setPage(numPage+1)}} className="bg-black hover:bg-gray-700 text-white py-2 px-8 border rounded-full">Next</button>
-            </div>
-            
-            <div className="flex items-center justify-center mt-2">
-                <input onChange={(e) => {setSearch(e.target.value)}} type="text" placeholder="Search pokemon..." className="appearance-none border-2 pl-10 w-1/4 border-gray-600 hover:border-gray-700 transition-colors rounded-md py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:ring-purple-600 focus:border-purple-600 focus:shadow-outline"  />
-            </div>
-            
-            <div className="container relative z-40 mx-auto mt-12">
-                <div className="flex flex-wrap justify-center mx-auto lg:w-full md:w-5/6 xl:shadow-small-blue">
-                {
-                    pokemons.map((pokemon) => {
-                        return <Pokemon key={pokemon.name} pokemon={pokemon} poke={pokeCard} numPage={page}/>
-                    })
-                }
-                </div>
-            </div>
-        </>
-    )
-}
+    fetchData();
+  }, [setPokemons]);
+
+  const fetchMorePokemons = async () => {
+    try {
+      const startIndex = numPage * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${itemsPerPage}&offset=${startIndex}`);
+      const pokemonList = response.data.results;
+      const pokemonPromises = pokemonList.map((pokemon) => {
+        return axios.get(pokemon.url);
+      });
+
+      const pokemonResponses = await Promise.all(pokemonPromises);
+      const newPokemonData = pokemonResponses.map((res) => {
+        const pokemon = res.data;
+        return {
+          ...pokemon,
+          sprites: pokemon.sprites,
+        };
+      });
+
+      setPokemons((prevPokemons) => [...prevPokemons, ...newPokemonData]);
+      setPage((prevPage) => prevPage + 1);
+    } catch (error) {
+      console.error("Error fetching more Pokémon data:", error);
+    }
+  };
+
+  const handleSearch = (searchTerm) => {
+    clearTimeout(searchTimeout.current);
+    searchTimeout.current = setTimeout(() => {
+      setSearch(searchTerm);
+      setPage(1);
+    }, debounceTimeout);
+  };
+
+  useEffect(() => {
+    const filteredPokemons = pokemons.filter((pokemon) =>
+      pokemon.name.toLowerCase().includes(search.toLowerCase())
+    );
+    setVisiblePokemons(filteredPokemons);
+  }, [pokemons, search]);
+
+  const lastPokemonRef = useRef(null);
+  useEffect(() => {
+    if (observer.current) observer.current.disconnect();
+
+    observer.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        fetchMorePokemons();
+      }
+    });
+
+    if (lastPokemonRef.current) observer.current.observe(lastPokemonRef.current);
+
+    return () => {
+      if (observer.current) observer.current.disconnect();
+    };
+  }, [visiblePokemons, fetchMorePokemons]);
+
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  return (
+    <>
+      <div className="flex items-center justify-center">
+      </div>
+
+      <Searchbar onSearch={handleSearch} />
+
+      <div className="container relative z-40 mx-auto mt-12">
+        <div className="flex flex-wrap justify-center mx-auto lg:w-full md:w-5/6 xl:shadow-small-blue">
+          {visiblePokemons.map((pokemon, index) => (
+            <Pokemon key={`${pokemon.name}-${index}`} pokemon={pokemon} poke={pokeCard} numPage={page} />
+          ))}
+          <div ref={lastPokemonRef} style={{ height: 1 }} />
+        </div>
+      </div>
+
+      {visiblePokemons.length > itemsPerPage && (
+        <div className="fixed bottom-8 right-8 z-50">
+          <button
+            onClick={handleScrollToTop}
+            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
+          >
+            Scroll to Top
+          </button>
+        </div>
+      )}
+    </>
+  );
+};
