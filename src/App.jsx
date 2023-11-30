@@ -15,7 +15,8 @@ import { Teams } from "./components/teams";
 function App() {
   const [pageSelected, setPage] = useState(0)
   const [poke, setPokeCard] = useState()
-  const [teamSelected, setTeamSelected] = useState([]);
+
+  const [team, setTeam] = useState([]);
 
   const changePage = () => {
     switch (pageSelected) {
@@ -28,9 +29,9 @@ function App() {
       case 3:
         return <Pokedex page={setPage} pokeCard={setPokeCard} />
       case 4:
-        return <PokeCard page={setPage} pokemon={poke} addTeamMember={setTeamSelected} />
+        return <PokeCard page={setPage} pokemon={poke} addTeamMember={(e)=>{setTeam([...team, e]); console.log(team); }} />
       case 5:
-        return <Teams x={teamSelected}/>
+        return <Teams team={team}/>
     }
   }
 

@@ -1,20 +1,14 @@
-import React, { useEffect, useState } from 'react'
-
-export const Teams = ({x}) => {
-  const [teamSelected, setTeamSelected] = useState([]);
+import React from 'react'
 
 
-  useEffect(()=>{
-    setTeamSelected([x])
-  }, [])
 
+export const Teams = ({team}) => {
 
   return (
     <>
       <div>Teams</div>
-    
       {
-        teamSelected.map((poke)=>{
+        x.map((poke)=>{
           return <p>{poke.name}</p>
         })
       }
