@@ -8,7 +8,7 @@ export const Teams = ({team}) => {
     <>
       <div>Teams</div>
       {
-        x.map((poke)=>{
+        team.map((poke)=>{
           return <p>{poke.name}</p>
         })
       }
