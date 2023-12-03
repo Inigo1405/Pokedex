@@ -1,11 +1,12 @@
 import React from 'react'
 
 
+export const Teams = ({team, user}) => {
 
-export const Teams = ({team}) => {
 
   return (
     <>
+      {user ? <p>{user}</p> : <p>Sin registrar</p> }
       <div>Teams</div>
       {
         team.map((poke)=>{

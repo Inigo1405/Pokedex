@@ -13,26 +13,36 @@ import { Teams } from "./components/teams";
 
 
 function App() {
+  
+  const [user, setUser] = useState()
+  
   const [pageSelected, setPage] = useState(0)
   const [poke, setPokeCard] = useState()
   
 
   const [team, setTeam] = useState([]);
 
+  const addToTeam = (e) => {
+
+    console.log(team); 
+    setTeam([...team, e]); 
+  }
+
+
   const changePage = () => {
     switch (pageSelected) {
       case 0: 
         return <Landing page={setPage}/>
       case 1:
-        return <Login/>
+        return <Login userID={setUser}/>
       case 2:
-        return <Sign/>
+        return <Sign userID={setUser}/>
       case 3:
         return <Pokedex page={setPage} pokeCard={setPokeCard} />
       case 4:
-        return <PokeCard page={setPage} pokemon={poke} addTeamMember={(e)=>{setTeam([...team, e]); console.log(team); }} />
+        return <PokeCard page={setPage} pokemon={poke} addTeamMember={addToTeam} />
       case 5:
-        return <Teams team={team}/>
+        return <Teams team={team} user={user}/>
     }
   }
 
