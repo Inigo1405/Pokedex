@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { Header } from './components/navbar'
 import { Login } from './components/auth/login'
@@ -19,11 +19,10 @@ function App() {
   const [pageSelected, setPage] = useState(0)
   const [poke, setPokeCard] = useState()
   
-
   const [team, setTeam] = useState([]);
 
-  const addToTeam = (e) => {
 
+  const addToTeam = (e) => {
     console.log(team); 
     setTeam([...team, e]); 
   }
@@ -36,13 +35,18 @@ function App() {
       case 1:
         return <Login userID={setUser}/>
       case 2:
-        return <Sign userID={setUser}/>
+        return <Sign page={setPage} userID={setUser}/>
       case 3:
         return <Pokedex page={setPage} pokeCard={setPokeCard} />
       case 4:
         return <PokeCard page={setPage} pokemon={poke} addTeamMember={addToTeam} />
       case 5:
-        return <Teams team={team} user={user}/>
+        if (user){
+          return <Teams team={team} user={user}/>
+        }
+        else{
+          return <Sign userID={setUser}/>
+        }
     }
   }
 
@@ -51,7 +55,7 @@ function App() {
     <>
       <Header page={setPage} />
 
-      <AuthDetails/>
+      <AuthDetails user={setUser}/>
       <div>
         {changePage()}
       </div>

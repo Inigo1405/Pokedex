@@ -4,7 +4,9 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { firestore } from '../../firebase/firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
 
-export const Sign = ({userID}) => {
+import { newTeam } from '../formats';
+
+export const Sign = ({userID, page}) => {
     const [email, setEmail] = useState ("");
     const [password, setPassword] = useState ("");
 
@@ -12,19 +14,11 @@ export const Sign = ({userID}) => {
         e.preventDefault();
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                console.log(userCredential)
+                // console.log(userCredential)
 
-                setDoc(doc(firestore, `users/${userCredential.user.uid}`), {})
+                setDoc(doc(firestore, `users/${userCredential.user.uid}`), newTeam);
                 userID(userCredential.user.uid)
-
-                signInWithEmailAndPassword(auth, email, password)
-                    .then((userCredential) => {
-                        console.log(userCredential);
-                        // console.log(userCredential.user.uid);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                page(3)
                     
             }).catch((error) => {
                 console.log(error)
@@ -129,5 +123,6 @@ export const Sign = ({userID}) => {
         </div>
     )
 }
+
 
 export default Sign

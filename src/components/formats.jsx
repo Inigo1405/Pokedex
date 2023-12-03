@@ -1,0 +1,28 @@
+export const newTeam = {
+    principal:{
+        poke1:{
+            name:'',
+            sprites:''
+        },
+        poke2:{
+            name:'',
+            sprites:''
+        },
+        poke3:{
+            name:'',
+            sprites:''
+        },
+        poke4:{
+            name:'',
+            sprites:''
+        },
+        poke5:{
+            name:'',
+            sprites:''
+        },
+        poke6:{
+            name:'',
+            sprites:''
+        }
+    }
+}

@@ -26,6 +26,19 @@ export const PokeCard = ({ page, pokemon, addTeamMember }) => {
     return numberString.length > 1 ? `#${numberString}` : `#00${numberString}`;
   };
 
+  const formatMeasures = (number) => {
+    const numberString = number.toString();
+
+    if (numberString.length > 1) {
+        // Inserta el punto decimal antes del último dígito
+        const formattedNumber = `#${numberString.slice(0, -1)}.${numberString.slice(-1)}`;
+        return formattedNumber;
+    } else {
+        // Si el número es un solo dígito, agrega un cero antes del punto decimal
+        return `0.${numberString}`;
+    }
+}
+
   const getFlavorText = () => {
     if (pokemonSpecies && pokemonSpecies.flavor_text_entries[8]) {
       return pokemonSpecies.flavor_text_entries[8].flavor_text;
@@ -52,6 +65,8 @@ export const PokeCard = ({ page, pokemon, addTeamMember }) => {
     setTimeout(() => {
       setAddedToTeam(false);
     }, 2000);
+
+    addTeamMember(pokemon)
   };
 
   const getWeaknesses = () => {
@@ -139,7 +154,7 @@ export const PokeCard = ({ page, pokemon, addTeamMember }) => {
     return (
       <div className="mb-6">
         <h2 className="text-2xl font-semibold mb-3">Weight:</h2>
-        <p className="text-gray-700 text-lg">{formatNumber(pokemon.weight)} kg</p>
+        <p className="text-gray-700 text-lg">{formatMeasures(pokemon.weight)} kg</p>
       </div>
     );
   };
@@ -148,7 +163,7 @@ export const PokeCard = ({ page, pokemon, addTeamMember }) => {
     return (
       <div className="mb-6">
         <h2 className="text-2xl font-semibold mb-3">Height:</h2>
-        <p className="text-gray-700 text-lg">{formatNumber(pokemon.height)} m</p>
+        <p className="text-gray-700 text-lg">{formatMeasures(pokemon.height)} m</p>
       </div>
     );
   };
@@ -258,9 +273,10 @@ export const PokeCard = ({ page, pokemon, addTeamMember }) => {
           </div>
         </div>
         <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6">
-          <h2 className="text-3xl font-bold mb-4 capitalize">
-            {pokemon.name}
+          <h2 className="text-3xl font-bold mb-1 capitalize">
+            #{pokemon.name}
           </h2>
+          <h3 className="w-1/2 mb-4">{formatNumber(pokemon.id)}</h3>
           <p className="leading-relaxed mb-6 text-lg">{getFlavorText()}</p>
           {renderTypes()}
           {renderWeaknesses()}
