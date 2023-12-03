@@ -17,6 +17,7 @@ import { firestore } from "../firebase/firebaseConfig";
 
 export const Teams = ({team, user}) => {
   const [teamSelect, setTeam] = useState([]);
+  const [readData, setReadData] = useState(false);
 
   const colletionRef = collection(firestore, "users");
 
@@ -29,6 +30,7 @@ export const Teams = ({team, user}) => {
         }
       });
       setTeam(items);
+      setReadData(true);
     });
 
     return () => {
@@ -67,3 +69,5 @@ export const Teams = ({team, user}) => {
     </>
   );
 }
+
+// https://github.com/samfromaway/firebase-tutorial/blob/master/src/SnapshotFirebaseAdvanced.js
