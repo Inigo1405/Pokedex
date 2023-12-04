@@ -23,8 +23,8 @@ function App() {
 
 
   const addToTeam = (e) => {
-    console.log(team); 
     setTeam([...team, e]); 
+    console.log(team); 
   }
 
 
