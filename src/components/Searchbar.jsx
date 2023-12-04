@@ -17,7 +17,7 @@ export const Searchbar = (props) => {
         value={searchTerm}
         type="text"
         placeholder="Search Pokemon..."
-        className="border-2 border-gray-400 rounded-md py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
+        className="border-2 border-gray-400 rounded-md mt-16 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
       />
     </div>
   );

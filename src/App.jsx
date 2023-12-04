@@ -15,6 +15,8 @@ import { Teams } from "./components/teams";
 function App() {
   
   const [user, setUser] = useState()
+  const [signOut, setSignOut] = useState(false)
+
   
   const [pageSelected, setPage] = useState(0)
   const [poke, setPokeCard] = useState()
@@ -53,9 +55,9 @@ function App() {
   
   return (
     <>
-      <Header page={setPage} />
+      <Header page={setPage} user={user} signout={setSignOut}/>
 
-      <AuthDetails user={setUser}/>
+      <AuthDetails user={setUser} signout={signOut} confirmation={setSignOut}/>
       <div>
         {changePage()}
       </div>
