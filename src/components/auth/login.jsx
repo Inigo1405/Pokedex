@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { auth } from '../../firebase/firebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
-export const Login = ({userID}) => {
+export const Login = ({userID, page}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -12,6 +12,7 @@ export const Login = ({userID}) => {
             .then((userCredential) => {
                 console.log(userCredential);
                 userID(userCredential.user.uid)
+                page(3)
             })
             .catch((error) => {
                 console.log(error);

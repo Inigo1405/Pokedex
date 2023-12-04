@@ -33,7 +33,7 @@ function App() {
       case 0: 
         return <Landing page={setPage}/>
       case 1:
-        return <Login userID={setUser}/>
+        return <Login page={setPage} userID={setUser}/>
       case 2:
         return <Sign page={setPage} userID={setUser}/>
       case 3:
