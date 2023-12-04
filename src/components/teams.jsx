@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { doc, onSnapshot, setDoc, collection } from 'firebase/firestore';
 import { firestore } from "../firebase/firebaseConfig";
-
+import { newTeam } from "./formats";
 
 export const Teams = ({team, user}) => {
   const [teamSelect, setTeam] = useState([]);
@@ -69,13 +69,11 @@ export const Teams = ({team, user}) => {
     
     setDoc(doc(firestore, `users/${user}`), teamSelect);
   }
+
+  const deletTeam = () => {
+    setDoc(doc(firestore, `users/${user}`), newTeam);
+  }
   
-  console.log(team)
-
-
-  
-
-  // setDoc(doc(firestore, `users/${userCredential.user.uid}`), newTeam);
 
   const showTeam = () => {
     if (!teamSelect || !teamSelect.principal || !teamSelect.principal.poke1) {
@@ -84,27 +82,35 @@ export const Teams = ({team, user}) => {
     }
 
     return (
-      <div className="flex justify-center wrap">
-        <div className="m-4 text-center">
-          <img src={teamSelect.principal.poke1.sprites} alt="" className="w-32 h-32 mx-auto mb-2 rounded-full" />
-          <p className="text-lg font-bold">{teamSelect.principal.poke1.name}</p>
+      <>
+        {
+          teamSelect.principal.poke1.name != '' 
+          ? 
+          <button onClick={deletTeam} className="text-black bg-gray-300 border-0 ml-4 py-2 px-5 focus:outline-none hover:bg-red-700 rounded">Delet team!</button>
+          : <p>New Team</p>
+        }
+        <div className="flex justify-center wrap">
+          <div className="m-4 text-center">
+            <img src={teamSelect.principal.poke1.sprites} alt="" className="w-32 h-32 mx-auto mb-2 rounded-full" />
+            <p className="text-lg font-bold">{teamSelect.principal.poke1.name}</p>
 
-          <img src={teamSelect.principal.poke2.sprites} alt="" className="w-32 h-32 mx-auto mb-2 rounded-full" />
-          <p className="text-lg font-bold">{teamSelect.principal.poke2.name}</p>
+            <img src={teamSelect.principal.poke2.sprites} alt="" className="w-32 h-32 mx-auto mb-2 rounded-full" />
+            <p className="text-lg font-bold">{teamSelect.principal.poke2.name}</p>
 
-          <img src={teamSelect.principal.poke3.sprites} alt="" className="w-32 h-32 mx-auto mb-2 rounded-full" />
-          <p className="text-lg font-bold">{teamSelect.principal.poke3.name}</p>
+            <img src={teamSelect.principal.poke3.sprites} alt="" className="w-32 h-32 mx-auto mb-2 rounded-full" />
+            <p className="text-lg font-bold">{teamSelect.principal.poke3.name}</p>
 
-          <img src={teamSelect.principal.poke4.sprites} alt="" className="w-32 h-32 mx-auto mb-2 rounded-full" />
-          <p className="text-lg font-bold">{teamSelect.principal.poke4.name}</p>
+            <img src={teamSelect.principal.poke4.sprites} alt="" className="w-32 h-32 mx-auto mb-2 rounded-full" />
+            <p className="text-lg font-bold">{teamSelect.principal.poke4.name}</p>
 
-          <img src={teamSelect.principal.poke5.sprites} alt="" className="w-32 h-32 mx-auto mb-2 rounded-full" />
-          <p className="text-lg font-bold">{teamSelect.principal.poke5.name}</p>
-          
-          <img src={teamSelect.principal.poke6.sprites} alt="" className="w-32 h-32 mx-auto mb-2 rounded-full" />
-          <p className="text-lg font-bold">{teamSelect.principal.poke6.name}</p>
+            <img src={teamSelect.principal.poke5.sprites} alt="" className="w-32 h-32 mx-auto mb-2 rounded-full" />
+            <p className="text-lg font-bold">{teamSelect.principal.poke5.name}</p>
+            
+            <img src={teamSelect.principal.poke6.sprites} alt="" className="w-32 h-32 mx-auto mb-2 rounded-full" />
+            <p className="text-lg font-bold">{teamSelect.principal.poke6.name}</p>
+          </div>
         </div>
-      </div>
+      </>
       
     );
   };
