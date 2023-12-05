@@ -1,39 +1,66 @@
-import { useState, useEffect } from 'react'
+import React, { useState } from "react";
+
 import { Header } from './components/navbar'
-import axios from "axios";
+import { Login } from './components/auth/login'
+import { Sign } from './components/auth/registrarse'
+import {AuthDetails} from './components/AuthDetails'
+import { Landing } from "./components/landing";
+
+import { Pokedex } from './components/Pokedex';
+import { PokeCard } from "./components/pokeCard";
+
+import { Teams } from "./components/teams";
 
 
 function App() {
-  const [page, setPage] = useState(1)
-  const [pokemons, setPokemons] = useState([])
+  
+  const [user, setUser] = useState()
+  const [signOut, setSignOut] = useState(false)
 
-  const url = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=${(page-1)*20}`
+  
+  const [pageSelected, setPage] = useState(0)
+  const [poke, setPokeCard] = useState()
+  
+  const [team, setTeam] = useState([]);
 
-  // Consume la API de pokemon
-  useEffect(() => {
-    axios.get(url).then((response) => {
-        const pokemonList = response.data.results
-        const pokemonPromises = pokemonList.map(pokemon => {
-            return axios.get(pokemon.url)
-        })
 
-        Promise.all(pokemonPromises).then(pokemonResponses => {
-            const pokemonData = pokemonResponses.map(res => {
-                const pokemon = res.data 
-                return {
-                    ...pokemon,
-                    sprites: pokemon.sprites
-                }
-            })
-            setPokemons(pokemonData)
-        })
-    })
-  }, [setPokemons, page])
+  const addToTeam = (e) => {
+    setTeam([...team, e]); 
+    console.log(team); 
+  }
+
+
+  const changePage = () => {
+    switch (pageSelected) {
+      case 0: 
+        return <Landing page={setPage}/>
+      case 1:
+        return <Login page={setPage} userID={setUser}/>
+      case 2:
+        return <Sign page={setPage} userID={setUser}/>
+      case 3:
+        return <Pokedex page={setPage} pokeCard={setPokeCard} />
+      case 4:
+        return <PokeCard page={setPage} pokemon={poke} addTeamMember={addToTeam} user={user} />
+      case 5:
+        if (user){
+          return <Teams team={team} user={user}/>
+        }
+        else{
+          return <Sign userID={setUser}/>
+        }
+    }
+  }
 
   
   return (
     <>
-      <Header/>
+      <Header page={setPage} user={user} signout={setSignOut}/>
+
+      <AuthDetails user={setUser} signout={signOut} confirmation={setSignOut}/>
+      <div>
+        {changePage()}
+      </div>
     </>
   )
 }
