@@ -1,10 +1,6 @@
 import React from 'react'
-import { auth } from '../firebase/firebaseConfig'
 
 export const Header = ({page, user, signout}) => {
-
-    
-
 
     return (
         <header className="fixed top-0 left-0 z-50 w-screen bg-white">

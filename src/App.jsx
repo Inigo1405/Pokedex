@@ -41,7 +41,7 @@ function App() {
       case 3:
         return <Pokedex page={setPage} pokeCard={setPokeCard} />
       case 4:
-        return <PokeCard page={setPage} pokemon={poke} addTeamMember={addToTeam} />
+        return <PokeCard page={setPage} pokemon={poke} addTeamMember={addToTeam} user={user} />
       case 5:
         if (user){
           return <Teams team={team} user={user}/>

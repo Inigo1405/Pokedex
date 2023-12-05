@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-export const PokeCard = ({ page, pokemon, addTeamMember }) => {
+export const PokeCard = ({ page, pokemon, addTeamMember, user }) => {
   const [pokemonSpecies, setPokemonSpecies] = useState(null);
   const [shiny, setShiny] = useState(false);
   const [addedToTeam, setAddedToTeam] = useState(false);
+  const [canAdd, setCanAdd] = useState(false);
 
   useEffect(() => {
     const fetchPokemonSpecies = async () => {
@@ -60,13 +61,16 @@ export const PokeCard = ({ page, pokemon, addTeamMember }) => {
 
   const handleAddToTeam = () => {
     // Simulating adding to a team by logging the information
-    console.log(`Added ${pokemon.name} to Team!`);
-    setAddedToTeam(true);
-    setTimeout(() => {
-      setAddedToTeam(false);
-    }, 2000);
-
-    addTeamMember(pokemon)
+    if (user != undefined){
+      setCanAdd(true)
+      console.log(`Added ${pokemon.name} to Team!`);
+      setAddedToTeam(true);
+      setTimeout(() => {
+        setAddedToTeam(false);
+      }, 2000);
+  
+      addTeamMember(pokemon)
+    }
   };
 
   const getWeaknesses = () => {
@@ -234,7 +238,7 @@ export const PokeCard = ({ page, pokemon, addTeamMember }) => {
   };
 
   return (
-    <section className="text-gray-800 body-font overflow-hidden rounded-lg shadow-md">
+    <section className="text-gray-800 body-font overflow-hidden rounded-lg shadow-md  mt-16">
       <div className="container mx-auto flex flex-wrap">
         <div className="lg:w-1/2 w-full lg:mt-0 mt-6">
           <button
