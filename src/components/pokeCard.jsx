@@ -186,7 +186,7 @@ export const PokeCard = ({ page, pokemon, addTeamMember, user }) => {
               </p>
               <div className="relative h-6 bg-gray-200 rounded-full">
                 <div
-                  className={`absolute top-0 left-0 h-6 bg-${statColors[stat.stat.name.toLowerCase()]} rounded-full`}
+                  className={`absolute top-0 left-0 h-6 ${statColors[stat.stat.name.toLowerCase()]} rounded-full`}
                   style={{ width: `${(stat.base_stat / 255) * 100}%` }}
                 ></div>
               </div>
@@ -321,12 +321,12 @@ const typeColors = {
 };
 
 const statColors = {
-  hp: "green-500",
-  attack: "red-500",
-  defense: "blue-500",
-  "special-attack": "yellow-500",
-  "special-defense": "indigo-500",
-  speed: "pink-500",
+  hp: "bg-green-500",
+  attack: "bg-red-500",
+  defense: "bg-blue-500",
+  "special-attack": "bg-yellow-500",
+  "special-defense": "bg-indigo-500",
+  speed: "bg-pink-500",
 };
 
 typeColors["pokemon-type"] = "rounded-full w-6 h-6 border-2 border-gray-300";
